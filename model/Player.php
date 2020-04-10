@@ -19,19 +19,6 @@ class Player extends Manager
         return $foundLines;
     }
 
-    public function getPlayer($login)
-    {
-        $db = $this->dbConnect();
-        $player = $db->prepare('SELECT * FROM player WHERE pseudo= :pseudo OR email= :email');
-        $player->execute(array(
-            'pseudo' => $login,
-            'email' => $login
-        ));
-        $foundPlayer = $player->fetch();
-
-        return $foundPlayer;
-    }
-
     public function signPlayerUp($name, $firstName, $pseudo, $eMail, $pass)
     {
         $db = $this->dbConnect();
@@ -46,4 +33,18 @@ class Player extends Manager
 
         return $newPlayer;
     }
+
+    public function getPlayer($login)
+    {
+        $db = $this->dbConnect();
+        $player = $db->prepare('SELECT * FROM player WHERE pseudo= :pseudo OR email= :email');
+        $player->execute(array(
+            'pseudo' => $login,
+            'email' => $login
+        ));
+        $foundPlayer = $player->fetch();
+
+        return $foundPlayer;
+    }
+    
 }

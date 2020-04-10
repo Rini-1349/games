@@ -1,4 +1,5 @@
 <?php 
+session_start();
 
 require('controller/frontend.php');
 
@@ -8,7 +9,11 @@ try
     {
         $action = htmlspecialchars($_GET['action']);
 
-        if ($action == 'signUp')
+        if ($action == 'homepage')
+        {
+            homepage();
+        }
+        elseif ($action == 'signUp')
         {
             $errorMessage = '';
 
@@ -47,7 +52,7 @@ try
                 signUpForm($errorMessage);
             }
         }
-        if ($action == 'connection')
+        elseif ($action == 'connection')
         {
             if (isset($_POST['login']) AND isset($_POST['pass']))
             {
@@ -60,10 +65,16 @@ try
                 connectionForm();
             }
         }
+        elseif ($action == 'sessionDestoy')
+        {
+            session_unset();
+            session_destroy();
+            homepage();
+        }
     }
     else 
     {
-        echo 'Page d\'accueil';
+        homepage();
     }
 }
 catch(Exception $e)

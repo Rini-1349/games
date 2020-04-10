@@ -1,9 +1,19 @@
 <?php
 require_once('model/Player.php');
 
+function homepage()
+{
+    require('view/frontend/homepageView.php');
+}
+
 function signUpForm($errorMessage)
 {
     require('view/frontend/signUpView.php');
+}
+
+function connectionForm()
+{
+    require('view/frontend/connectionView.php');
 }
 
 function addPlayer($name, $firstName, $pseudo, $eMail, $pass)
@@ -22,11 +32,6 @@ function addPlayer($name, $firstName, $pseudo, $eMail, $pass)
     }
 }
 
-function connectionForm()
-{
-    require('view/frontend/connectionView.php');
-}
-
 function connectionPlayer($login, $pass)
 {
     $player = new Player();
@@ -40,7 +45,13 @@ function connectionPlayer($login, $pass)
         $isPasswordCorrect = password_verify($pass, $foundPlayer['pass']);
         if ($isPasswordCorrect)
         {
-            echo 'Connexion...';
+            session_start();
+            $_SESSION = array(
+                'name' => $foundPlayer['name'],
+                'first_name' => $foundPlayer['first_name'],
+                'pseudo' => $foundPlayer['pseudo'],
+            );
+            header('Location: index.php?action=homepage');
         }
         else
         {
