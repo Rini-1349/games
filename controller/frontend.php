@@ -9,7 +9,7 @@ function signUpForm($errorMessage)
 function addPlayer($name, $firstName, $pseudo, $eMail, $pass)
 {
     $player = new Player();
-    $foundLines = $player->getPlayer($pseudo, $eMail);
+    $foundLines = $player->loginAlreadyTaken($pseudo, $eMail);
     if ($foundLines == 0)
     {
         $player->signPlayerUp($name, $firstName, $pseudo, $eMail, $pass);
@@ -19,5 +19,32 @@ function addPlayer($name, $firstName, $pseudo, $eMail, $pass)
     {
         $errorMessage = 'Pseudo ou adresse mail déjà utilisé(e)';
         signUpForm($errorMessage);
+    }
+}
+
+function connectionForm()
+{
+    require('view/frontend/connectionView.php');
+}
+
+function connectionPlayer($login, $pass)
+{
+    $player = new Player();
+    $foundPlayer = $player->getPlayer($login);
+    if (!$foundPlayer)
+    {
+        echo 'Login ou mot de passe incorrect';
+    }
+    else
+    {
+        $isPasswordCorrect = password_verify($pass, $foundPlayer['pass']);
+        if ($isPasswordCorrect)
+        {
+            echo 'Connexion...';
+        }
+        else
+        {
+            echo 'Mot de passe incorrect';
+        }
     }
 }

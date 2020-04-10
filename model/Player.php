@@ -9,7 +9,7 @@ class Player extends Manager
     private $_email;
     private $_pass;
 
-    public function getPlayer($pseudo, $eMail)
+    public function loginAlreadyTaken($pseudo, $eMail)
     {
         $db = $this->dbConnect();
         $player = $db->prepare('SELECT * FROM player WHERE pseudo=? OR email=?');
@@ -17,6 +17,19 @@ class Player extends Manager
         $foundLines = $player->rowCount();
 
         return $foundLines;
+    }
+
+    public function getPlayer($login)
+    {
+        $db = $this->dbConnect();
+        $player = $db->prepare('SELECT * FROM player WHERE pseudo= :pseudo OR email= :email');
+        $player->execute(array(
+            'pseudo' => $login,
+            'email' => $login
+        ));
+        $foundPlayer = $player->fetch();
+
+        return $foundPlayer;
     }
 
     public function signPlayerUp($name, $firstName, $pseudo, $eMail, $pass)

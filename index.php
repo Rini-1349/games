@@ -47,6 +47,19 @@ try
                 signUpForm($errorMessage);
             }
         }
+        if ($action == 'connection')
+        {
+            if (isset($_POST['login']) AND isset($_POST['pass']))
+            {
+                $login=htmlspecialchars($_POST['login']);
+                $pass=htmlspecialchars($_POST['pass']);
+                connectionPlayer($login, $pass);
+            }
+            else
+            {
+                connectionForm();
+            }
+        }
     }
     else 
     {
