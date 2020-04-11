@@ -20,7 +20,6 @@ class CadavreExquis extends Game
         ORDER BY id');
         $uncompletedPlays->execute(array($playerId));
         
-
         return $uncompletedPlays;
     }
 

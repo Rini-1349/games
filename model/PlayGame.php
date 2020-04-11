@@ -22,4 +22,24 @@ class PlayGame extends Manager
 
         return $enrolledInPlay;
     }
+
+    public function alreadyPlayedGame($gameId, $playerId)
+    {
+        $db = $this->dbConnect();
+        $response = $db->prepare('SELECT * FROM play_game 
+        WHERE game_id=? AND player_id=?');
+        $response->execute(array($gameId, $playerId));
+        $alreadyPlayedThisGame = $response->fetch();
+
+        return $alreadyPlayedThisGame;
+    }
+
+    public function enrollPlayer($playerId, $gameId, $choice)
+    {
+        $db = $this->dbConnect();
+        $enrollPlayer = $db->prepare('INSERT INTO play_game(player_id, game_id, choice, start_date) VALUES (?, ?, ?, NOW())');
+        $enrollPlayer->execute(array($playerId, $gameId, $choice));
+
+        return $enrollPlayer;
+    }
 }

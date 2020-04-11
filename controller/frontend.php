@@ -73,14 +73,49 @@ function enrollPlayer($playerId)
         $uncompletedPlays = $cadavreExquis->uncompletedPlays($playerId);
         if ($uncompletedPlays)
         {
-            echo 'Il y a des parties incomplètes';
+            $break=0;
+            $result=0;
+            while ($uncompletedPlay = $uncompletedPlays->fetch() AND $break==0)
+            {
+                $alreadyPlayedGame = $playGame->alreadyPlayedGame($uncompletedPlay['id'], $playerId);
+                if (!$alreadyPlayedGame)
+                {
+                    $break=1;
+                    $result=0;
+                    $gameId = $uncompletedPlay['id'];
+
+                    if ($uncompletedPlay['verb']==NULL)
+                    {
+                        $choice='verb';
+                    }
+                    else
+                    {
+                        $choice='complement';
+                    }
+                }
+                else
+                {                   
+                    $result=1;
+                }
+            }
+            if ($result==1)  
+            {
+                $newPlay = $cadavreExquis->newPlay();
+                $uncompletedPlays = $cadavreExquis->uncompletedPlays($playerId);
+                $uncompletedPlay = $uncompletedPlays->fetch();
+                $gameId = $uncompletedPlay['id'];
+                $choice = 'subject';
+            }
         }
         else
         {
-            echo 'Pas de jeu incomplet à proposer';
-            //$newPlay = $cadavreExquis->newPlay();
+            $newPlay = $cadavreExquis->newPlay();
+            $uncompletedPlays = $cadavreExquis->uncompletedPlays($playerId);
+            $uncompletedPlay = $uncompletedPlays->fetch();
+            $gameId = $uncompletedPlay['id'];
             $choice = 'subject';
         }
+        $enrollPlayer = $playGame->enrollPlayer($playerId, $gameId, $choice);
     }
     else
     {
