@@ -1,5 +1,7 @@
 <?php
 require_once('model/Player.php');
+require_once('model/CadavreExquis.php');
+require_once('model/PlayGame.php');
 
 function homepage()
 {
@@ -23,7 +25,7 @@ function addPlayer($name, $firstName, $pseudo, $eMail, $pass)
     if ($foundLines == 0)
     {
         $player->signPlayerUp($name, $firstName, $pseudo, $eMail, $pass);
-        echo 'Inscription effectuée';
+        header('Location: index.php?action=homepage');
     }
     else
     {
@@ -58,4 +60,30 @@ function connectionPlayer($login, $pass)
             echo 'Mot de passe incorrect';
         }
     }
+}
+
+function enrollPlayer($playerId)
+{      
+    $playGame = new PlayGame();
+    $cadavreExquis = new CadavreExquis();
+
+    $enrolledInPlay = $playGame->enrolledInPlay($playerId);
+    if (!$enrolledInPlay)
+    {
+        $uncompletedPlays = $cadavreExquis->uncompletedPlays($playerId);
+        if ($uncompletedPlays)
+        {
+            echo 'Il y a des parties incomplètes';
+        }
+        else
+        {
+            echo 'Pas de jeu incomplet à proposer';
+            //$newPlay = $cadavreExquis->newPlay();
+            $choice = 'subject';
+        }
+    }
+    else
+    {
+        echo 'Jeu en cours - Terminez votre partie';
+    }   
 }

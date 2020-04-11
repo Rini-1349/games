@@ -71,6 +71,10 @@ try
             session_destroy();
             homepage();
         }
+        elseif ($action == 'play')
+        {
+            enrollPlayer('1');
+        }
     }
     else 
     {

@@ -8,16 +8,18 @@ class PlayGame extends Manager
     private $_startDate;
     private $_endDate;
 
-    public function lastPlay($playerId)
+    public function enrolledInPlay($playerId)
     {
         $db = $this->dbConnect();
-        $lastPlay = $db->prepare(
+        $notFinishedPlays = $db->prepare(
             'SELECT * 
             FROM play_game 
-            WHERE player_id= ?
-            LIMIT O,1'
+            WHERE player_id=?
+            AND end_date IS NULL'
         );
-        $lastPlay->execute(array($playerId));
-        return $lastPlay;
+        $notFinishedPlays->execute(array($playerId));
+        $enrolledInPlay = $notFinishedPlays->fetch();
+
+        return $enrolledInPlay;
     }
 }
