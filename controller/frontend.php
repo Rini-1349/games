@@ -49,6 +49,7 @@ function connectionPlayer($login, $pass)
         {
             session_start();
             $_SESSION = array(
+                'player_id' => $foundPlayer['id'],
                 'name' => $foundPlayer['name'],
                 'first_name' => $foundPlayer['first_name'],
                 'pseudo' => $foundPlayer['pseudo'],
@@ -70,52 +71,32 @@ function enrollPlayer($playerId)
     $enrolledInPlay = $playGame->enrolledInPlay($playerId);
     if (!$enrolledInPlay)
     {
-        $uncompletedPlays = $cadavreExquis->uncompletedPlays($playerId);
-        if ($uncompletedPlays)
+        $uncompletedPlay = $cadavreExquis->uncompletedPlays($playerId);
+        if (empty($uncompletedPlay))
         {
-            $break=0;
-            $result=0;
-            while ($uncompletedPlay = $uncompletedPlays->fetch() AND $break==0)
-            {
-                $alreadyPlayedGame = $playGame->alreadyPlayedGame($uncompletedPlay['id'], $playerId);
-                if (!$alreadyPlayedGame)
-                {
-                    $break=1;
-                    $result=0;
-                    $gameId = $uncompletedPlay['id'];
-
-                    if ($uncompletedPlay['verb']==NULL)
-                    {
-                        $choice='verb';
-                    }
-                    else
-                    {
-                        $choice='complement';
-                    }
-                }
-                else
-                {                   
-                    $result=1;
-                }
-            }
-            if ($result==1)  
-            {
-                $newPlay = $cadavreExquis->newPlay();
-                $uncompletedPlays = $cadavreExquis->uncompletedPlays($playerId);
-                $uncompletedPlay = $uncompletedPlays->fetch();
-                $gameId = $uncompletedPlay['id'];
-                $choice = 'subject';
-            }
+            $newPlay = $cadavreExquis->newPlay();
+            $createdPlay = $cadavreExquis->createdPlay();
+            $gameId = $createdPlay['id'];
+            $choice = 'subject';
         }
         else
         {
-            $newPlay = $cadavreExquis->newPlay();
-            $uncompletedPlays = $cadavreExquis->uncompletedPlays($playerId);
-            $uncompletedPlay = $uncompletedPlays->fetch();
             $gameId = $uncompletedPlay['id'];
-            $choice = 'subject';
+            if ($uncompletedPlay['verb']==NULL)
+            {
+                $choice = 'verb';
+                $response = 'Verbe';
+                $chooseVerb = $cadavreExquis->updateResponse($gameId, $choice, $response);
+            }
+            else
+            {
+                $choice = 'complement';
+                $response = 'Complément';
+                $chooseComplement = $cadavreExquis->updateResponse($gameId, $choice, $response);
+            }
         }
         $enrollPlayer = $playGame->enrollPlayer($playerId, $gameId, $choice);
+        require('view/frontend/playView.php');
     }
     else
     {

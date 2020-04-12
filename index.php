@@ -73,7 +73,21 @@ try
         }
         elseif ($action == 'play')
         {
-            enrollPlayer('1');
+            if (isset($_GET['playerId']) AND isset($_GET['gameId']) AND isset($_GET['choice']) AND isset($_POST['response']))
+            {
+                $playerId = htmlspecialchars($_GET['playerId']);
+                $gameId = htmlspecialchars($_GET['gameId']);
+                $choice = htmlspecialchars($_GET['choice']);
+                echo 'J\'enregistre tes réponses';
+            }
+            elseif ($_SESSION)
+            {
+                enrollPlayer($_SESSION['player_id']);
+            }
+            else
+            {
+                header('Location: index.php?action=connection');
+            }
         }
     }
     else 
