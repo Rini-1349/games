@@ -8,12 +8,7 @@ function homepage()
     require('view/frontend/homepageView.php');
 }
 
-function signUpForm($errorMessage)
-{
-    require('view/frontend/signUpView.php');
-}
-
-function connectionForm($errorMessage)
+function connectionForm($errorMessageConnection, $errorMessageSignUp)
 {
     require('view/frontend/connectionView.php');
 }
@@ -38,10 +33,11 @@ function connectionPlayer($login, $pass)
 {
     $player = new Player();
     $foundPlayer = $player->getPlayer($login);
+    $errorMessageSignUp='';
     if (!$foundPlayer)
     {
-        $errorMessage = 'Login ou mot de passe incorrect';
-        connectionForm($errorMessage);
+        $errorMessageConnection = 'Login ou mot de passe incorrect';
+        connectionForm($errorMessageConnection, $errorMessageSignUp);
     }
     else
     {
@@ -59,8 +55,8 @@ function connectionPlayer($login, $pass)
         }
         else
         {
-            $errorMessage = 'Login ou mot de passe incorrect';
-            connectionForm($errorMessage);
+            $errorMessageConnection = 'Login ou mot de passe incorrect';
+            connectionForm($errorMessageConnection, $errorMessageSignUp);
         }
     }
 }

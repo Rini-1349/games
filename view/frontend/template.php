@@ -17,7 +17,7 @@
         else
         {
             $link='index.php?action=connection';
-            $changeConnection='Se connecter';
+            $changeConnection='Se connecter/S\'inscire';
         }
         ?>
         <a href="<?= $link ?>"><li><?= $changeConnection ?></li></a>

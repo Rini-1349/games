@@ -13,11 +13,17 @@ try
         {
             homepage();
         }
-        elseif ($action == 'signUp')
+        elseif ($action == 'connection')
         {
-            $errorMessage = '';
-
-            if (isset ($_POST['name']) AND isset ($_POST['first_name']) AND isset ($_POST['pseudo']) AND isset ($_POST['email']) AND isset ($_POST['pass']) and isset ($_POST['pass_confirm']))
+            $errorMessageConnection = '';
+            $errorMessageSignUp = '';
+            if (isset($_POST['login']) AND isset($_POST['pass']))
+            {
+                $login=htmlspecialchars($_POST['login']);
+                $pass=htmlspecialchars($_POST['pass']);
+                connectionPlayer($login, $pass);
+            }
+            elseif (isset ($_POST['name']) AND isset ($_POST['first_name']) AND isset ($_POST['pseudo']) AND isset ($_POST['email']) AND isset ($_POST['pass']) and isset ($_POST['pass_confirm']))
             {
                 $name = htmlspecialchars($_POST['name']);
                 $first_name = htmlspecialchars($_POST['first_name']);
@@ -28,18 +34,18 @@ try
 
                 if (!preg_match("#^[a-z0-9_.-]+@[a-z0-9_.-]{2,}\.[a-z]{2,4}$#", $email))
                 {
-                    $errorMessage = 'Format d\'adresse email non valide';
-                    signUpForm($errorMessage);
+                    $errorMessageSignUp = 'Format d\'adresse email non valide';
+                    connectionForm($errorMessageConnection, $errorMessageSignUp);
                 }
                 elseif (!preg_match("#^\S*(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[0-9])(?=\S*[\W])\S{8,20}$#", $pass))
                 {
-                    $errorMessage = 'Le mot de passe doit contenir entre 8 et 20 caractères dont 1 chiffre, 1 minuscule, 1 majuscule et 1 caractère spécial';
-                    signUpForm($errorMessage);
+                    $errorMessageSignUp = 'Le mot de passe doit contenir entre 8 et 20 caractères dont 1 chiffre, 1 minuscule, 1 majuscule et 1 caractère spécial';
+                    connectionForm($errorMessageConnection, $errorMessageSignUp);
                 }
                 elseif ($pass != $pass_confirm)
                 {
-                    $errorMessage = 'Mots de passe différents';
-                    signUpForm($errorMessage);
+                    $errorMessageSignUp = 'Mots de passe différents';
+                    connectionForm($errorMessageConnection, $errorMessageSignUp);
                 }
                 else
                 {
@@ -49,21 +55,7 @@ try
             }
             else
             {
-                signUpForm($errorMessage);
-            }
-        }
-        elseif ($action == 'connection')
-        {
-            if (isset($_POST['login']) AND isset($_POST['pass']))
-            {
-                $login=htmlspecialchars($_POST['login']);
-                $pass=htmlspecialchars($_POST['pass']);
-                connectionPlayer($login, $pass);
-            }
-            else
-            {
-                $errorMessage = '';
-                connectionForm($errorMessage);
+                connectionForm($errorMessageConnection, $errorMessageSignUp);
             }
         }
         elseif ($action == 'sessionDestoy')
