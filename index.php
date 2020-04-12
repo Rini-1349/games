@@ -62,7 +62,8 @@ try
             }
             else
             {
-                connectionForm();
+                $errorMessage = '';
+                connectionForm($errorMessage);
             }
         }
         elseif ($action == 'sessionDestoy')
@@ -78,7 +79,8 @@ try
                 $playerId = htmlspecialchars($_GET['playerId']);
                 $gameId = htmlspecialchars($_GET['gameId']);
                 $choice = htmlspecialchars($_GET['choice']);
-                echo 'J\'enregistre tes réponses';
+                $response = htmlspecialchars($_POST['response']);     
+                saveResponse($playerId, $gameId, $choice, $response);  
             }
             elseif ($_SESSION)
             {

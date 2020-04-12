@@ -10,6 +10,7 @@
 		<input type="password" name="pass" id="pass" required />
 		<input type="submit" value="Valider" />
 	</form>
+	<p><?= $errorMessage ?></p>
 	<a href="index.php?action=signUp" >S'inscire</a>
 <?php $content=ob_get_clean(); ?>
 

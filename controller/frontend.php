@@ -13,7 +13,7 @@ function signUpForm($errorMessage)
     require('view/frontend/signUpView.php');
 }
 
-function connectionForm()
+function connectionForm($errorMessage)
 {
     require('view/frontend/connectionView.php');
 }
@@ -40,7 +40,8 @@ function connectionPlayer($login, $pass)
     $foundPlayer = $player->getPlayer($login);
     if (!$foundPlayer)
     {
-        echo 'Login ou mot de passe incorrect';
+        $errorMessage = 'Login ou mot de passe incorrect';
+        connectionForm($errorMessage);
     }
     else
     {
@@ -58,7 +59,8 @@ function connectionPlayer($login, $pass)
         }
         else
         {
-            echo 'Mot de passe incorrect';
+            $errorMessage = 'Login ou mot de passe incorrect';
+            connectionForm($errorMessage);
         }
     }
 }
@@ -96,10 +98,20 @@ function enrollPlayer($playerId)
             }
         }
         $enrollPlayer = $playGame->enrollPlayer($playerId, $gameId, $choice);
-        require('view/frontend/playView.php');
     }
     else
     {
-        echo 'Jeu en cours - Terminez votre partie';
+        $gameId = $enrolledInPlay['game_id'];
+        $choice = $enrolledInPlay['choice'];
     }   
+    require('view/frontend/playView.php');
+}
+
+function saveResponse($playerId, $gameId, $choice, $response)
+{
+    $playGame = new PlayGame();
+    $cadavreExquis = new CadavreExquis();
+    $updatedResponse = $cadavreExquis->updateResponse($gameId, $choice, $response);
+    $endGame = $playGame->endGame($playerId, $gameId);
+    header('Location: index.php?action=homepage');
 }

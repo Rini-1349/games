@@ -31,4 +31,11 @@ class PlayGame extends Manager
 
         return $enrollPlayer;
     }
+
+    public function endGame($playerId, $gameId)
+    {
+        $db = $this->dbConnect();
+        $endGame = $db->prepare('UPDATE play_game SET end_date = NOW() WHERE player_id = ? AND game_id = ?');
+        $endGame->execute(array($playerId, $gameId));
+    }
 }
