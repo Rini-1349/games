@@ -1,0 +1,61 @@
+@font-face {
+    font-family: 'adam_cg_pro';
+    src: url("../fonts/ADAMCGPRO.eot"); /* IE9 Compat Modes */
+    src: url("../fonts/ADAMCGPRO.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+      url("../fonts/ADAMCGPRO.otf") format("opentype"), /* Open Type Font */
+      url("../fonts/ADAMCGPRO.svg") format("svg"), /* Legacy iOS */
+      url("../fonts/ADAMCGPRO.ttf") format("truetype"), /* Safari, Android, iOS */
+      url("../fonts/ADAMCGPRO.woff") format("woff"), /* Modern Browsers */
+      url("../fonts/ADAMCGPRO.woff2") format("woff2"); /* Modern Browsers */
+    font-weight: normal;
+    font-style: normal;
+  }
+
+body{
+    font-family: 'adam_cg_pro';
+    color: #768f00;
+}
+
+input{
+    font-family: 'Verdana';
+}
+
+h1{
+    color: #008f83;
+}
+
+a, a:hover, a:visited{
+    text-decoration: none;
+    color: #00328f;
+}
+
+ul{
+    list-style-type: none;
+}
+
+
+/* Header */
+header{
+    margin: 2%;
+    border-bottom: 3px solid #8f4a00;
+}
+
+#nav{
+    margin-top: 1%;
+}
+
+#sparkling{
+    color: #768f00;
+    font-size: 1.5em;
+}
+
+.sous_titre{
+    font-size: 0.7em;
+}
+
+/* Tout */
+div, nav{
+    /*border: 3px solid black;*/
+    margin: auto;
+    padding: 1%;
+}
